@@ -15,6 +15,20 @@ class TestResult:
     details: str
 
 
+def get_repo_root() -> Path:
+    """Discovers repository root by walking up from this script.
+
+    Returns:
+        The root directory of the repository containing .git or modules.
+    """
+    current = Path(__file__).resolve().parent
+    while current != current.parent:
+        if (current / ".git").exists() or (current / "modules").exists():
+            return current
+        current = current.parent
+    return Path.cwd()
+
+
 def run_command_safe(command: List[str], cwd: Optional[Path] = None) -> subprocess.CompletedProcess:
     """Executes a subprocess command safely with captured output.
 
@@ -84,15 +98,16 @@ def main() -> int:
     Returns:
         Exit code 0 if all checks pass, otherwise 1.
     """
-    repo_root = Path(__file__).resolve().parent.parent.parent.parent
+    repo_root = get_repo_root()
 
     print("==================================================")
     print("   🏥  RUNNING REPOSITORY HEALTH AUDIT            ")
     print("==================================================")
 
     git_info = check_git_status(repo_root)
-    print(f"Git Branch: {git_info['branch']}")
-    print(f"Git Status: {git_info['details']}")
+    print(f"Repository Root: {repo_root}")
+    print(f"Git Branch:      {git_info['branch']}")
+    print(f"Git Status:      {git_info['details']}")
     print("--------------------------------------------------")
 
     test_targets = [
