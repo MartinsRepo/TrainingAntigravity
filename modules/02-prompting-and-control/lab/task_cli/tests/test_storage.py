@@ -17,7 +17,7 @@ from storage import MarkdownStorage, FileLock, StorageLockError
 class TestMarkdownParsing(unittest.TestCase):
     """Test parsing and serialization of Markdown task items."""
 
-    def test_parse_with_and_without_ids(self):
+    def test_parse_with_and_without_ids(self) -> None:
         raw_markdown = """# Project Tasks
 - [ ] [1] First existing task
 - [x] [2] Completed task
@@ -40,7 +40,7 @@ class TestMarkdownParsing(unittest.TestCase):
         self.assertEqual(tasks[3].title, "Unnumbered task without brackets")
         self.assertFalse(tasks[3].completed)
 
-    def test_serialization_roundtrip(self):
+    def test_serialization_roundtrip(self) -> None:
         tasks = [
             Task(id=1, title="Review PR", completed=False),
             Task(id=2, title="Deploy to prod", completed=True),
@@ -58,14 +58,14 @@ class TestMarkdownParsing(unittest.TestCase):
 class TestFileLocking(unittest.TestCase):
     """Test POSIX file lock contention."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
         self.lock_file = Path(self.temp_dir.name) / "test.lock"
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         self.temp_dir.cleanup()
 
-    def test_lock_exclusivity(self):
+    def test_lock_exclusivity(self) -> None:
         # Acquire lock in first context
         with FileLock(self.lock_file, timeout=0.5):
             # Attempting to acquire lock with short timeout must fail
@@ -73,7 +73,7 @@ class TestFileLocking(unittest.TestCase):
                 with FileLock(self.lock_file, timeout=0.1):
                     pass
 
-    def test_lock_release(self):
+    def test_lock_release(self) -> None:
         # Verify lock can be re-acquired sequentially
         with FileLock(self.lock_file, timeout=0.5):
             pass

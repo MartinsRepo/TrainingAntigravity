@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "post_tool_execution": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "command": "python3 .agents/hooks/standards_linter.py",
+        "description": "Automatically validates Python AST syntax, return type annotations, and absence of mutable defaults."
+      }
+    ]
+  }
+}

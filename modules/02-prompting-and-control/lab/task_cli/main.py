@@ -14,7 +14,7 @@ except ImportError:
     from tui import TaskTUI
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Markdown-based Interactive Task Manager CLI with File Locking."
     )

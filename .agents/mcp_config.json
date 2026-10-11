@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "sqlite-memory": {
+      "command": "python3",
+      "args": ["-m", "mcp_server_sqlite", "--db-path", ":memory:"],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+      "description": "In-memory SQLite database MCP server for fast schema inspection and relational prototyping."
+    },
+    "git-tools": {
+      "command": "python3",
+      "args": ["-m", "mcp_server_git"],
+      "env": {
+        "GIT_PYTHON_REFRESH": "quiet"
+      },
+      "description": "Standardized Git VCS operations and branch management MCP server."
+    },
+    "fetch-service": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "HTTP fetch server for retrieving and converting external web APIs and documentation."
+    }
+  }
+}
