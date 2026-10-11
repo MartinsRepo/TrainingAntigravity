@@ -1,47 +1,75 @@
 # Module 02: Lab Results & Output Documentation
 
-This document records the hands-on lab execution for **Module 02: Driving the Agent (Steering & Slash Commands)**, detailing the `/grill-me` architectural interview, the `/plan` phased roadmap, and the working implementation of the Markdown Task Manager CLI.
+This document records the exact prompts, interactive dialogues, planning artifacts, and verification traces from **Module 02: Driving the Agent (Steering & Slash Commands)**.
 
 ---
 
-## 📌 Exercise 2.1: The Interactive Interview (`/grill-me`)
+## 📌 Exercise 2.1: The `/grill-me` Dialogue & Architecture Alignment
 
-### User Objective
-Build a lightweight, concurrent-safe Markdown task management CLI tool inside the repository.
+### Initial User Prompt
+```text
+Gerne, fangen wir mit /grill-me an. Dieses Kommando kenne ich noch nicht vom Github Copiloten
+```
 
-### Grilling Questions & Architectural Decisions
-During the `/grill-me` session, the agent interviewed the user across four critical design vectors before writing any code:
+### Agent Grilling Questions
+The agent took the role of a Lead Architect and asked 4 critical design questions:
+1. **Runtime & Language:** Node.js/TypeScript vs. Python?
+2. **Storage & Data Persistence:** Option A (Pure Markdown checklist) vs. Option B (JSON) vs. Option C (SQLite)?
+3. **CLI Interaction Style:** UNIX command flags vs. Interactive TUI/Prompt?
+4. **Error Handling & Concurrency:** Handling concurrent file writes and missing task IDs?
 
-| Dimension | Question Asked | Selected Decision | Rationale |
-| :--- | :--- | :--- | :--- |
-| **1. Runtime & Language** | Node.js/TypeScript vs. Python? | **Python 3** | Zero runtime compilation, built-in standard library utilities (`fcntl`, `unittest`, `dataclasses`). |
-| **2. Data Persistence** | Markdown vs. JSON vs. SQLite? | **Pure Markdown (`TASKS.md`)** | Directly viewable and editable in Obsidian, GitHub, and text editors. Retains `- [ ] [ID]` format. |
-| **3. Interface Style** | UNIX CLI flags vs. Interactive TUI? | **Interactive TUI / Prompt** | Menu-driven terminal loop with colored status feedback (`✓`, `✗`) and simple numeric inputs. |
-| **4. Concurrency & Errors** | File locking & missing ID handling? | **POSIX File Locking & Explicit Error Signaling** | `fcntl.flock` prevents race conditions; explicit `TaskNotFoundError` raised when targeting invalid IDs. |
+### User Response & Architectural Decisions
+```text
+Runtime & Language: Python; Storage & Data Persistence: Option A; CLI Interaction Style: Interactive TUI / Prompt; Error Handling & Edge Cases: we implement file locking and error signaling, if the task is not existing
+```
+
+### Architectural Decisions Matrix
+| Dimension | Selected Decision | Technical Realization |
+| :--- | :--- | :--- |
+| **Language** | Python 3 | Clean modular package with standard library (`dataclasses`, `fcntl`, `typing`, `unittest`). |
+| **Storage Format** | Pure Markdown (`TASKS.md`) | Format: `- [ ] [ID] Task description` for seamless human readability. |
+| **Interface** | Interactive TUI | ANSI-styled terminal menu with options `[1] Add`, `[2] Toggle`, `[3] Delete`, `[4] Clear`, `[q] Quit`. |
+| **Concurrency & Errors** | POSIX File Locking & Custom Exceptions | `fcntl.flock` context manager prevents write collisions; explicit `TaskNotFoundError` on invalid IDs. |
 
 ---
 
-## 📌 Exercise 2.2: Phased Planning (`/plan`)
+## 📌 Exercise 2.2: The Phased Planning Roadmap (`/plan`)
 
-### Plan Artifact Generated
+### User Approval Prompt
+```text
+ja
+```
+
+### Generated Planning Artifact
 * **Artifact Path:** `task_manager_cli_plan.md`
 * **Artifact URL:** [task_manager_cli_plan.md](file:///home/martin/.gemini/antigravity-ide/brain/d9c20d7c-6f4c-4ef3-84e3-dfa112c1d209/task_manager_cli_plan.md)
 
-### Execution Phases Defined
-1. **Phase 1: Models & Markdown Parsing** (`models.py`)
-2. **Phase 2: Safe Storage & File Locking** (`storage.py`)
-3. **Phase 3: Core Service & Operations** (`manager.py`)
-4. **Phase 4: Interactive TUI Interface** (`tui.py`, `main.py`)
-5. **Phase 5: Automated Verification & Unit Tests** (`tests/`)
-6. **Phase 6: Solution Documentation & Git Milestone**
+### Implemented File Structure
+```text
+modules/02-prompting-and-control/lab/task_cli/
+├── __init__.py          # Package exports
+├── models.py            # Task dataclass & Markdown parser/serializer
+├── storage.py           # FileLock (fcntl) & MarkdownStorage engine
+├── manager.py           # TaskManager CRUD logic & monotonic ID generation
+├── tui.py               # Interactive menu loop & ANSI feedback
+├── main.py              # CLI entry point with --file flag support
+└── tests/
+    ├── __init__.py
+    ├── test_storage.py  # Tests for parsing, formatting, and file lock contention
+    └── test_manager.py  # Tests for task operations & TaskNotFoundError signaling
+```
 
 ---
 
-## 📌 Exercise 2.3: Verification & Execution Results
+## 📌 Exercise 2.3: Verification & Execution Outputs
 
-### 1. Automated Test Suite (100% Pass Rate)
-We executed the unit test suite verifying data serialization, file locking contention, and error signaling:
+### 1. Automated Test Execution
+Command executed:
+```bash
+python3 -m unittest discover -s modules/02-prompting-and-control/lab/task_cli/tests -v
+```
 
+Output:
 ```text
 test_add_and_list_tasks (test_manager.TestTaskManager.test_add_and_list_tasks) ... ok
 test_delete_and_clear_completed (test_manager.TestTaskManager.test_delete_and_clear_completed) ... ok
@@ -56,11 +84,11 @@ test_serialization_roundtrip (test_storage.TestMarkdownParsing.test_serializatio
 ----------------------------------------------------------------------
 Ran 8 tests in 0.116s
 
-OK
+OK (100% Pass Rate)
 ```
 
-### 2. Live CLI Interaction Simulation
-Testing the interactive TUI menu loop:
+### 2. Live CLI Terminal Simulation
+We tested interactive task addition and toggling:
 ```text
 ==================================================
    📋  MARKDOWN TASK MANAGER (Antigravity Lab)    
@@ -72,13 +100,21 @@ Testing the interactive TUI menu loop:
 ==================================================
    📋  MARKDOWN TASK MANAGER (Antigravity Lab)    
 ==================================================
+ ✓ Added task [2]: 'Execute /plan roadmap'
+--------------------------------------------------
+  [ ] [01] Master Antigravity /grill-me
+  [ ] [02] Execute /plan roadmap
+
+==================================================
+   📋  MARKDOWN TASK MANAGER (Antigravity Lab)    
+==================================================
  ✓ Task [1] marked as completed.
 --------------------------------------------------
   [x] [01] Master Antigravity /grill-me
   [ ] [02] Execute /plan roadmap
 ```
 
-### 3. Generated Markdown Output (`TASKS.md`)
+### 3. Resulting Markdown Persistence (`TASKS.md`)
 ```markdown
 # Task List
 
@@ -88,8 +124,15 @@ Testing the interactive TUI menu loop:
 
 ---
 
+## 📌 Git History Checkpoints
+
+* **Commit `1c64f3c`:** `feat: complete Module 2 with verified task CLI, document results, and setup Module 3`
+* **Status:** Working tree clean.
+
+---
+
 ## 🧠 Key Takeaways from Module 02
 
-1. **`/grill-me` Prevents Rework:** Traditional tools (like Copilot) assume and guess. `/grill-me` acts like a Senior Staff Engineer, resolving architectural trade-offs *before* code is written.
-2. **`/plan` Establishes Predictable Phases:** Breaking work into isolated units (storage, models, UI, tests) allows safe, testable, and verifiable increments.
-3. **Verification Closes the Loop:** Writing automated unit tests and running them inside the agent loop guarantees working software before delivery.
+1. **`/grill-me` vs. Blind Coding:** GitHub Copilot guesses requirements and frequently produces code with misaligned assumptions. Antigravity's `/grill-me` acts as a Senior Architect, interviewing you on trade-offs before touching the filesystem.
+2. **`/plan` Creates Measurable Milestones:** Complex tasks are decomposed into distinct, verifiable phases (models -> storage -> business logic -> UI -> tests).
+3. **Closing the Loop with Tests:** Real agents verify their code through automated test suites and live simulations before declaring victory.
