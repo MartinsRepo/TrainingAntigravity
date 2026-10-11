@@ -13,14 +13,14 @@ Agent, inspect our current repository and working directory using your tools, an
 
 ### Tool Execution Trace
 1. **`run_command`**: `pwd && ls -la && git status`
-   - *Result:* Discovered root directory `/home/martin/workspace/AG-Projects/LearningAG` on branch `main` with clean working tree.
+   - *Result:* Discovered root directory `/home/martin/workspace/AG-Projects/TrainingAntigravity` on branch `main` with clean working tree.
 2. **`run_command`**: `git log --oneline -n 5 && find . -maxdepth 3 -not -path '*/.*'`
    - *Result:* Retrieved initial commit `13b07a6` and scanned workspace files.
-3. **`list_dir`**: `/home/martin/workspace/AG-Projects/LearningAG/modules/01-agent-mental-model/lab`
+3. **`list_dir`**: `/home/martin/workspace/AG-Projects/TrainingAntigravity/modules/01-agent-mental-model/lab`
    - *Result:* Confirmed existence of `EXERCISE.md`.
 
 ### Produced Output
-* **Working Directory:** `/home/martin/workspace/AG-Projects/LearningAG`
+* **Working Directory:** `/home/martin/workspace/AG-Projects/TrainingAntigravity/`
 * **Files Present:**
   * `README.md` – Main curriculum roadmap.
   * `modules/01-agent-mental-model/README.md` – Theory on agent mental model.
