@@ -10,8 +10,8 @@ Welcome to the **Antigravity Agent Mastery** hands-on training repository! This 
 | :--- | :--- | :--- | :---: |
 | **01** | [The Agent Mental Model & Tool Loop](modules/01-agent-mental-model/README.md) | Understanding how the agent thinks, ReAct loop, context, tools, and artifacts | 🟢 *Completed* |
 | **02** | [Driving the Agent: Steering & Slash Commands](modules/02-prompting-and-control/README.md) | Effective prompting, `/plan`, `/grill-me`, `/goal`, and feedback loops | 🟢 *Completed* |
-| **03** | [Custom Rules & Guardrails](modules/03-custom-rules/README.md) | `GEMINI.md`, `AGENTS.md`, and contextual coding standards | 🟡 *In Progress* |
-| **04** | [Building Custom Skills](modules/04-building-skills/README.md) | Creating reusable workflows with `SKILL.md` and progressive disclosure | ⚪ *Upcoming* |
+| **03** | [Custom Rules & Guardrails](modules/03-custom-rules/README.md) | `GEMINI.md`, `AGENTS.md`, and contextual coding standards | 🟢 *Completed* |
+| **04** | [Building Custom Skills](modules/04-building-skills/README.md) | Creating reusable workflows with `SKILL.md` and progressive disclosure | 🟡 *In Progress* |
 | **05** | [Advanced Tools & Automation](modules/05-advanced-tools/README.md) | Browser subagent, background tasks, scheduler, and artifacts | ⚪ *Upcoming* |
 | **06** | [Extensibility: MCP & Hooks](modules/06-mcp-and-hooks/README.md) | Model Context Protocol (`mcp_config.json`) and lifecycle `hooks.json` | ⚪ *Upcoming* |
 | **07** | [Capstone Project](modules/07-capstone-project/README.md) | End-to-end software development led by you as Lead Architect | ⚪ *Upcoming* |
